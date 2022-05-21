@@ -1,0 +1,14 @@
+# Next Part
+
+I use Cutter to diffuse the bomb i decompile the execute file
+
+### Phase 1
+
+```
+08048b32      int32_t eax_1 = strings_not_equal(arg1, "Public speaking is very easy.")
+08048b3c      if (eax_1 == 0)
+08048b46          return eax_1
+08048b3e      explode_bomb()
+08048b3e      noreturn
+
+```
