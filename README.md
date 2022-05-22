@@ -9,7 +9,10 @@ _There will be no visible IP address, and there’s a reason why..._
 
 To get the Ip address we used "nmap" cause we used bridge, For a "Bridged" virtual network adapter, the host shares its physical adapters, i.e. the VM basically connects to the network like any other physical system. so we got my ip by ifconfig and then we scaned by netmask /24.
 
+
+
 > nmap -A 10.12.100.1/24
+
 
 After the scan finished, we got this result 
 
@@ -120,6 +123,40 @@ Target: http://10.12.100.74/
 [18:38:42] 200 -    1KB - /index.html
 [18:38:58] 403 -  293B  - /server-status
 [18:38:58] 403 -  294B  - /server-status/
+
+Task Completed
+```
+
+We can see that there is some important directories like :
+
+> /forum
+
+But we don't have permission to access /forum on this server with http, 
+
+```
+./dirsearch.py -u https://10.12.100.74
+
+  _|. _ _  _  _  _ _|_    v0.4.2.4
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25
+Wordlist size: 11308
+
+Output File: /goinfre/ybolles/dd/ybolles/Scripts/dirsearch/reports/10.12.100.74/_22-05-22_18-56-45.txt
+
+Target: https://10.12.100.74/
+
+[18:56:45] Starting:
+[18:57:02] 403 -  289B  - /cgi-bin/
+[18:57:10] 301 -  314B  - /forum  ->  https://10.12.100.74/forum/
+[18:57:10] 200 -    5KB - /forum/
+[18:57:22] 301 -  319B  - /phpmyadmin  ->  https://10.12.100.74/phpmyadmin/
+[18:57:23] 200 -    7KB - /phpmyadmin/
+[18:57:23] 200 -    7KB - /phpmyadmin/index.php
+[18:57:28] 403 -  294B  - /server-status
+[18:57:28] 403 -  295B  - /server-status/
+[18:57:39] 403 -  307B  - /webmail/src/configtest.php
+[18:57:39] 302 -    0B  - /webmail/  ->  src/login.php
 
 Task Completed
 ```
