@@ -824,6 +824,7 @@ tech
 temp
 template
 templates
+templates_c
 temporal
 temps
 terminal

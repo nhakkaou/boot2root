@@ -12,3 +12,62 @@ I use Cutter to diffuse the bomb i decompile the execute file
 08048b3e      noreturn
 
 ```
+
+## Phase 2
+
+in the begining there is a function _read_six_numbers_ check if there is 6 numbers and then check if the first one is number '1'
+
+then the other number follow this suit sequence :
+
+```
+         tmp = (i + 1) * tab[i - 1];
+         if ((tab)[i] != tmp)
+             explode_bomb()
+```
+
+the result is `1 2 6 24 120 720`
+
+## Phase 3
+
+this part they checked if the first number < 7 if not explode bomb, there is sscanf with this format "%d %c %d".
+we know the hint the second is letter b in hexa is 0x62
+
+```
+sscanf(s: arg1, format: "%d %c %d", &var_10, &var_9, &var_8)
+.
+.
+.
+
+08048c92      if (ebx.b == var_9)
+08048c9f          return eax_1
+```
+
+in the switch case 2 ebx.b = 0x62 ("b")
+
+```
+08048c16          case 2
+08048c16              ebx.b = 0x62
+08048c1f              if (var_8 != 0x2f3)
+08048c21                  explode_bomb()
+08048c21                  noreturn
+```
+
+the result is `2 b 755`
+
+## Phase 4
+
+in the Phase 4 they checked if the return of func4 is equal to 55 the function4:
+
+```
+int func4(int agr1)
+{
+	int tmp;
+	if (agr1 <= 1)
+		tmp = 1;
+	else
+		tmp = func4(agr1 - 2) + func4(agr1 - 1);
+	return tmp;
+}
+```
+
+i use Scripts/function4.c and i got the result is : `9`
