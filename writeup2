@@ -13,6 +13,8 @@ I use Cutter to diffuse the bomb i decompile the execute file
 
 ```
 
+the Result is `Public speaking is very easy.`
+
 ## Phase 2
 
 in the begining there is a function _read_six_numbers_ check if there is 6 numbers and then check if the first one is number '1'
@@ -71,3 +73,9 @@ int func4(int agr1)
 ```
 
 i use Scripts/function4.c and i got the result is : `9`
+
+## Phase 5
+
+This phase i try to create as C programm you can check phase 5 in Scripts folder.
+
+the result is `opekma`
