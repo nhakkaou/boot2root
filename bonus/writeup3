@@ -1,0 +1,14 @@
+# Access root by Booting
+
+Reboot your virtual machine and when you see Oracle's logo , click the screen (focus there) and then hold down Shift
+For more details this topic is Usefull [Click here](https://www.layerstack.com/resources/tutorials/Resetting-root-password-for-Linux-Cloud-Servers-by-booting-into-Single-User-Mode#Debian&Ubuntu)
+
+<table>
+<tr>
+<td>
+<img src="../Ressources/Screen1.png" width="450"  />
+</td>
+<td>
+<img src="../Ressources/Screen2.png" width="450"  />
+</td>
+</table>
