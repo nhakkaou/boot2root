@@ -120,4 +120,107 @@ Encode Sha256:
 
 > 330b845f32185747e4f8ca15d40ca59796035c89ea809fb5d30f4da83ecf45a4
 
-~look to next writeup2
+# Next Part
+
+I use Cutter to diffuse the bomb i decompile the execute file
+
+### Phase 1
+
+```
+08048b32      int32_t eax_1 = strings_not_equal(arg1, "Public speaking is very easy.")
+08048b3c      if (eax_1 == 0)
+08048b46          return eax_1
+08048b3e      explode_bomb()
+08048b3e      noreturn
+
+```
+
+the Result is `Public speaking is very easy.`
+
+## Phase 2
+
+in the begining there is a function _read_six_numbers_ check if there is 6 numbers and then check if the first one is number '1'
+
+then the other number follow this suit sequence :
+
+```
+         tmp = (i + 1) * tab[i - 1];
+         if ((tab)[i] != tmp)
+             explode_bomb()
+```
+
+the result is `1 2 6 24 120 720`
+
+## Phase 3
+
+this part they checked if the first number < 7 if not explode bomb, there is sscanf with this format "%d %c %d".
+we know the hint the second is letter b in hexa is 0x62
+
+```
+sscanf(s: arg1, format: "%d %c %d", &var_10, &var_9, &var_8)
+.
+.
+.
+
+08048c92      if (ebx.b == var_9)
+08048c9f          return eax_1
+```
+
+in the switch case 2 ebx.b = 0x62 ("b")
+
+```
+08048c16          case 2
+08048c16              ebx.b = 0x62
+08048c1f              if (var_8 != 0x2f3)
+08048c21                  explode_bomb()
+08048c21                  noreturn
+```
+
+the result is `2 b 755`
+
+## Phase 4
+
+in the Phase 4 they checked if the return of func4 is equal to 55 the function4:
+
+```
+int func4(int agr1)
+{
+	int tmp;
+	if (agr1 <= 1)
+		tmp = 1;
+	else
+		tmp = func4(agr1 - 2) + func4(agr1 - 1);
+	return tmp;
+}
+```
+
+i use Scripts/function4.c and i got the result is : `9`
+
+## Phase 5
+
+This phase i try to create as C programm you can check phase 5 in Scripts folder.
+
+the result is `opekma`
+
+## Phase 6
+
+`Publicspeakingisveryeasy.126241207202b7559opekmq426135`
+
+# Thor
+
+You found a file contain instructions i try to use [turttle logo online](https://turtleacademy.com/lessons/2)
+i found this result this picture Contain 5 Letters S S L A H then a i used the [generator](https://word.tips/unscramble/SSlah/length/5/) i got this `SLASH`
+
+<img src="https://github.com/nhakkaou/boot2root/blob/master/Ressources/screen.png?raw=true" width="250" height="250"/>
+
+# Zaz
+
+In the Home there execute file `exploit_me` print the argument
+but when the argument length more than 140 print `Segmentation fault (core dumped)`
+buffer overflow.
+
+```
+A buffer overflow attack typically involves violating programming languages and overwriting the bounds of the buffers they exist on. Most buffer overflows are caused by the combination of manipulating memory and mistaken assumptions around the composition or size of data.
+```
+
+<img src="https://www.researchgate.net/publication/281560966/figure/fig1/AS:652973764009994@1532692485512/Stack-buffer-overflow-attack_Q640.jpg" width="300"/>
