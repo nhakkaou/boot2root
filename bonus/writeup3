@@ -1,14 +1,21 @@
-# Access root by Booting
+# Boot2Root
 
-Reboot your virtual machine and when you see Oracle's logo , click the screen (focus there) and then hold down Shift
-For more details this topic is Usefull [Click here](https://www.layerstack.com/resources/tutorials/Resetting-root-password-for-Linux-Cloud-Servers-by-booting-into-Single-User-Mode#Debian&Ubuntu)
+In this method we will retrieve the `squashfs` file , so you need to mount the iso using the following command :
 
-<table>
-<tr>
-<td>
-<img src="../Ressources/Screen1.png"   />
-</td>
-<td>
-<img src="../Ressources/Screen2.png"   />
-</td>
-</table>
+```bash
+mkdir iso && sudo mount ${iso_file_name} -o loop iso/
+```
+
+![mouting](screen/mount1.png)
+
+Now you need to navigate to casper and get the file `filesystem.squashfs`
+
+![squashfs](screen/mount2.png)
+
+After the mount you got read-only directory so you need to cp the file to another workspace and then you can extract all files in the vm using the cmd `unsquash filesystem.squashfs`
+
+![squashfs](screen/mount3.png)
+
+Bingo you got acces to all root folders and files
+
+![squashfs](screen/readme.png)
