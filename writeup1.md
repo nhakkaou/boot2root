@@ -204,7 +204,86 @@ the result is `opekma`
 
 ## Phase 6
 
+In the first part in the function they check if numbers is < 6 and not repeating
+
+```
+08048e00      do
+08048e00      {
+08048dca          if ((*(int32_t*)(&var_1c + (edi << 2)) - 1) > 5)
+08048dc7          {
+08048dcc              explode_bomb();
+08048dcc              /* no return */
+08048dcc          }
+08048dd1          int32_t ebx_1 = (edi + 1);
+08048dd7          if (ebx_1 <= 5)
+08048dd4          {
+08048dd9              int32_t eax_3 = (edi << 2);
+08048dfa              do
+08048dfa              {
+08048def                  if (*(int32_t*)(eax_3 + &var_1c) == *(int32_t*)(&var_1c + (ebx_1 << 2)))
+08048dec                  {
+08048df1                      explode_bomb();
+08048df1                      /* no return */
+08048df1                  }
+08048df6                  ebx_1 = (ebx_1 + 1);
+08048df6              } while (ebx_1 <= 5);
+08048df7          }
+08048dfc          edi = (edi + 1);
+08048dfc      } while (edi <= 5);
+```
+
+and the next part we have a list struct like this
+
+```
+struct node {
+    int val;
+    int index;
+    struct node *next;
+};
+```
+
+they tried to fill the tab var_40 by the node list correspond to index
+
+```
+08048e42      do
+08048e42      {
+08048e10          void* esi_3 = &node1;
+08048e13          int32_t j = 1;
+08048e18          int32_t eax_5 = (i << 2);
+08048e24          if (1 < *(int32_t*)(eax_5 + &var_1c))
+08048e21          {
+08048e26              int32_t eax_6 = *(int32_t*)(eax_5 + &var_1c);
+08048e29              esi_3 = &node1;
+08048e36              do
+08048e36              {
+08048e30                  esi_3 = *(int32_t*)((char*)esi_3 + 8);
+08048e33                  j = (j + 1);
+08048e33              } while (j < eax_6);
+08048e34          }
+08048e3b          var_40[i] = esi_3;
+08048e3e          i = (i + 1);
+08048e3e      } while (i <= 5);
+
+```
+
+the list values are :
+
+node 1: 00fd 253
+
+node 2: 02d5 725
+
+node 3: 0000012d 301
+
+node 4: 0000003e5 997
+
+node 5: 000000d4 212
+
+node 6: 000001b0 432
+
+after the hint i try to sort those number and the result is `4 2 6 3 1 5`
+
 `Publicspeakingisveryeasy.126241207202b7559opekmq426135`
+10.30.181.172
 
 # Thor
 
@@ -212,6 +291,8 @@ You found a file contain instructions i try to use [turttle logo online](https:/
 i found this result this picture Contain 5 Letters S S L A H then a i used the [generator](https://word.tips/unscramble/SSlah/length/5/) i got this `SLASH`
 
 <img src="https://github.com/nhakkaou/boot2root/blob/master/Ressources/screen.png?raw=true" width="250" height="250"/>
+
+encode Md5: `646da671ca01bb5d84dbb5fb2238dc8e`
 
 # Zaz
 
