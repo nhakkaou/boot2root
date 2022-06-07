@@ -283,7 +283,7 @@ node 6: 000001b0 432
 after the hint i try to sort those number and the result is `4 2 6 3 1 5`
 
 `Publicspeakingisveryeasy.126241207202b7559opekmq426135`
-10.30.181.172
+
 
 # Thor
 
