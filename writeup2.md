@@ -6,9 +6,9 @@ For more details this topic is Usefull [Click here](https://www.layerstack.com/r
 <table>
 <tr>
 <td>
-<img src="../Ressources/Screen1.png"   />
+<img src="https://github.com/nhakkaou/boot2root/blob/master/Ressources/Screen1.png?raw=true"   />
 </td>
 <td>
-<img src="../Ressources/Screen2.png"   />
+<img src="https://github.com/nhakkaou/boot2root/blob/master/Ressources/Screen1.png?raw=true"   />
 </td>
 </table>
